@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DCS Typing Practice</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; background-color: #f0f0f0; }
+    textarea, #typing-area { width: 100%; padding: 10px; font-size: 18px; margin-bottom: 20px; }
+    #keyboard { display: flex; flex-direction: column; gap: 5px; margin-bottom: 20px; }
+    .row { display: flex; gap: 5px; justify-content: center; }
+    .key { padding: 10px; border: 1px solid #ccc; text-align: center; font-size: 18px; border-radius: 4px; min-width: 32px; }
+    .spacebar { min-width: 300px; }
+    .highlight { background-color: yellow !important; }
+    #message { font-weight: bold; font-size: 20px; color: green; }
+    #feedback { font-weight: bold; color: red; margin-top: 10px; }
+    #results { margin-top: 10px; }
+    .toggle-container { margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+  <h1>DCS Typing Practice</h1>
+  <label for="custom-text">Enter Text for Typing Practice:</label>
+  <textarea id="custom-text" rows="3"></textarea>
+  <button onclick="startTyping()">Start Typing</button>
+  <div class="toggle-container">
+    <label><input type="checkbox" id="case-toggle" onchange="createKeyboard()"> Show lowercase letters</label>
+  </div>
+  <div class="toggle-container">
+    <label><input type="checkbox" id="audio-toggle" checked> Audio Prompts</label>
+  </div>
+  <input id="typing-area" disabled onkeydown="return false;">
+  <div id="keyboard"></div>
+  <p id="message"></p>
+  <p id="feedback"></p>
+  <div id="results"></div>
+
+  <audio id="success-sound">
+    <source src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg" type="audio/ogg">
+    <source src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="error-sound">
+    <source src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" type="audio/ogg">
+    <source src="https://actions.google.com/sounds/v1/alarms/beep_short.mp3" type="audio/mpeg">
+  </audio>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  <script>
+    // You will paste your full JavaScript logic here, including createKeyboard() and all event listeners
+    document.getElementById('keyboard').innerHTML = '<p style="color: gray;">[Keyboard will appear here after logic is added]</p>';
+  </script>
+</body>
+</html>
