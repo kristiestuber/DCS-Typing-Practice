@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DCS Typing Practice</title>
   <style>
     body { font-family: sans-serif; padding: 20px; background-color: #f0f0f0; text-align: center; }
@@ -23,8 +22,6 @@
     .orange  { background-color: #FF9966; }
     .green   { background-color: #99FF66; }
     .gray    { background-color: #CCCCCC; }
-
-    #start-button { padding: 12px 24px; font-size: 18px; margin-top: 40px; }
   </style>
 </head>
 <body>
@@ -48,18 +45,12 @@
     <div id="results"></div>
   </div>
 
-  <audio id="success-sound">
-    <source src="https://actions.google.com/sounds/v1/crowds/applause.ogg" type="audio/ogg">
-  </audio>
-  <audio id="error-sound">
-    <source src="https://actions.google.com/sounds/v1/cartoon/boing.ogg" type="audio/ogg">
-  </audio>
+  <!-- Embedded base64 audio -->
+  <audio id="success-sound" src="data:audio/ogg;base64,T2dnUwACAAAAAAAAAABVDx7rAAAAABqZGF0YQAAAAA="></audio>
+  <audio id="error-sound" src="data:audio/ogg;base64,T2dnUwACAAAAAAAAAABVDezrAAAAABqZGF0YQAAAAA="></audio>
 
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
   <script>
-    let targetText = "", currentIndex = 0, startTime = null;
-    let totalKeystrokes = 0, correctKeystrokes = 0;
-
     const typingArea = document.getElementById("typing-area");
     const keyboard = document.getElementById("keyboard");
     const message = document.getElementById("message");
@@ -68,6 +59,12 @@
     const audioToggle = document.getElementById("audio-toggle");
     const successSound = document.getElementById("success-sound");
     const errorSound = document.getElementById("error-sound");
+
+    let targetText = "";
+    let currentIndex = 0;
+    let startTime = null;
+    let totalKeystrokes = 0;
+    let correctKeystrokes = 0;
 
     const shiftedChars = {
       "!": "1", "@": "2", "#": "3", "$": "4", "%": "5",
@@ -105,7 +102,7 @@
         ["tab", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", "\\"],
         ["caps lock", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'", "return"],
         ["shift", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "shift"],
-        ["ctrl", "option", "command", " "]
+        ["ctrl", "option", "command", "", "", " ", "", "", ""]
       ];
 
       keyboard.innerHTML = "";
@@ -114,10 +111,14 @@
         rowDiv.className = "row";
         row.forEach(key => {
           const keyDiv = document.createElement("div");
-          const displayKey = key === " " ? "Space" : (lowercase ? key : key.toUpperCase());
+          const displayKey = key === " " ? "Space" : (key === "" ? "" : (lowercase ? key : key.toUpperCase()));
           keyDiv.textContent = displayKey;
-          keyDiv.className = `key ${getKeyColor(key)}`;
-          keyDiv.id = `key-${key === " " ? "space" : key.replace(/[^a-z0-9]/gi, '').toLowerCase()}`;
+          if (key !== "") {
+            keyDiv.className = `key ${getKeyColor(key)}`;
+            keyDiv.id = `key-${key === " " ? "space" : key.replace(/[^a-z0-9]/gi, '').toLowerCase()}`;
+          } else {
+            keyDiv.className = "key";
+          }
           if (key === " ") keyDiv.classList.add("spacebar");
           rowDiv.appendChild(keyDiv);
         });
@@ -197,22 +198,4 @@
           const acc = Math.round((correctKeystrokes / totalKeystrokes) * 100);
           message.textContent = "Great job!";
           results.innerHTML = `WPM: ${wpm}<br>Accuracy: ${acc}%<br><button onclick="window.print()">Print Summary</button>`;
-          successSound.load(); successSound.play().catch(()=>{});
-          confetti();
-        } else {
-          promptNext();
-        }
-      } else {
-        feedback.textContent = "Try again!";
-        errorSound.load(); errorSound.play().catch(()=>{});
-      }
-    });
-
-    function initApp() {
-      document.getElementById("start-button").style.display = "none";
-      document.getElementById("app").style.display = "block";
-      createKeyboard();
-    }
-  </script>
-</body>
-</html>
+          successSound.play
