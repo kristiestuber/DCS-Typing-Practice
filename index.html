@@ -22,6 +22,8 @@
     .orange  { background-color: #FF9966; }
     .green   { background-color: #99FF66; }
     .gray    { background-color: #CCCCCC; }
+
+    #start-button { padding: 12px 24px; font-size: 18px; margin-top: 40px; }
   </style>
 </head>
 <body>
@@ -45,7 +47,7 @@
     <div id="results"></div>
   </div>
 
-  <!-- Embedded base64 audio -->
+  <!-- Embedded base64 audio (small placeholders) -->
   <audio id="success-sound" src="data:audio/ogg;base64,T2dnUwACAAAAAAAAAABVDx7rAAAAABqZGF0YQAAAAA="></audio>
   <audio id="error-sound" src="data:audio/ogg;base64,T2dnUwACAAAAAAAAAABVDezrAAAAABqZGF0YQAAAAA="></audio>
 
@@ -72,6 +74,28 @@
       "_": "-", "+": "=", ":": ";", "\"": "'", "<": ",", ">": ".", "?": "/"
     };
 
+    const spokenChars = {
+      "!": "exclamation mark",
+      "?": "question mark",
+      ".": "period",
+      ",": "comma",
+      ":": "colon",
+      ";": "semicolon",
+      "\"": "quotation mark",
+      "'": "apostrophe",
+      "-": "dash",
+      "_": "underscore",
+      "(": "left parenthesis",
+      ")": "right parenthesis",
+      "&": "ampersand",
+      "#": "hashtag",
+      "*": "asterisk",
+      "+": "plus",
+      "=": "equals",
+      "/": "slash",
+      "\\": "backslash"
+    };
+
     const colorMap = {
       blue: ["`", "1", "0", "tab", "q", "caps lock", "a", "shift", "z", "ctrl", "option", "-", "=", "p", "[", "]", "\\", "delete", "return", ";", "/", "'"],
       yellow: ["2", "w", "s", "x", "command", "9", "o", "l", ".", "*"],
@@ -91,7 +115,8 @@
 
     function speak(text) {
       if (!audioToggle.checked) return;
-      const utterance = new SpeechSynthesisUtterance(text);
+      const custom = spokenChars[text];
+      const utterance = new SpeechSynthesisUtterance(custom || text);
       speechSynthesis.speak(utterance);
     }
 
@@ -170,14 +195,11 @@
       if (currentIndex >= targetText.length) return;
       const char = targetText[currentIndex];
       highlightKey(char);
-      if (char === " ") speak("space");
-      else if (/[A-Z]/.test(char)) speak("capital " + char);
-      else speak(char);
+      speak(char);
     }
 
     document.addEventListener("keydown", e => {
       if (typingArea.disabled) return;
-
       const ignoredKeys = ["Shift", "CapsLock", "Control", "Alt", "Meta", "Delete"];
       if (ignoredKeys.includes(e.key)) return;
 
@@ -198,4 +220,22 @@
           const acc = Math.round((correctKeystrokes / totalKeystrokes) * 100);
           message.textContent = "Great job!";
           results.innerHTML = `WPM: ${wpm}<br>Accuracy: ${acc}%<br><button onclick="window.print()">Print Summary</button>`;
-          successSound.play
+          successSound.play().catch(()=>{});
+          confetti();
+        } else {
+          promptNext();
+        }
+      } else {
+        feedback.textContent = "Try again!";
+        errorSound.play().catch(()=>{});
+      }
+    });
+
+    function initApp() {
+      document.getElementById("start-button").style.display = "none";
+      document.getElementById("app").style.display = "block";
+      createKeyboard();
+    }
+  </script>
+</body>
+</html>
