@@ -16,12 +16,14 @@
     #message { font-weight: bold; font-size: 20px; color: green; }
     #feedback { font-weight: bold; color: red; margin-top: 10px; }
     #results { margin-top: 10px; }
-    .blue { background-color: #66B2FF; }
-    .yellow { background-color: #F4C542; }
-    .pink { background-color: #F76C6C; }
-    .orange { background-color: #F4A261; }
-    .green { background-color: #2A9D8F; }
-    .gray { background-color: #d3d3d3; }
+
+    /* Color palette matching the image */
+    .blue    { background-color: #66CCFF; }
+    .yellow  { background-color: #FFFF66; }
+    .pink    { background-color: #FF99FF; }
+    .orange  { background-color: #FF9966; }
+    .green   { background-color: #99FF66; }
+    .gray    { background-color: #CCCCCC; }
   </style>
 </head>
 <body>
@@ -68,12 +70,11 @@
     let correctKeystrokes = 0;
 
     const colorMap = {
-      blue: ["`", "1", "tab", "q", "caps lock", "a", "shift", "z", "ctrl", "option"],
-      yellow: ["2", "w", "s", "x", "command", "9", "o", "l", "."],
+      blue: ["`", "1", "tab", "q", "caps lock", "a", "shift", "z", "ctrl", "option", "-", "=", "p", "[", "]", "\\", "delete", "return"],
+      yellow: ["2", "w", "s", "x", "command", "9", "o", "l", ".", ";", "/", "*"],
       pink: ["3", "e", "d", "c", "8", "i", "k", ","],
       orange: ["4", "5", "r", "t", "f", "g", "v", "b"],
       green: ["6", "7", "y", "u", "h", "j", "n", "m"],
-      lightblue: ["0", "-", "p", ";", "/", "[", "]", "\\", "=", "delete", "'", "return", "shift", "arrow"],
       gray: [" "]
     };
 
@@ -154,14 +155,20 @@
 
     document.addEventListener("keydown", e => {
       if (typingArea.disabled) return;
+
+      const ignoredKeys = ["Shift", "CapsLock", "Control", "Alt", "Meta", "Delete"];
+      if (ignoredKeys.includes(e.key)) return;
+
       const expected = targetText[currentIndex];
       const key = e.key;
       totalKeystrokes++;
+
       if (key === expected) {
         correctKeystrokes++;
         feedback.textContent = "";
         typingArea.value += key;
         currentIndex++;
+
         if (currentIndex === targetText.length) {
           typingArea.disabled = true;
           const elapsed = (new Date() - startTime) / 60000;
