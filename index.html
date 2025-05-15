@@ -15,15 +15,12 @@
     #message { font-weight: bold; font-size: 20px; color: green; }
     #feedback { font-weight: bold; color: red; margin-top: 10px; }
     #results { margin-top: 10px; }
-
     .blue    { background-color: #66CCFF; }
     .yellow  { background-color: #FFFF66; }
     .pink    { background-color: #FF99FF; }
     .orange  { background-color: #FF9966; }
     .green   { background-color: #99FF66; }
     .gray    { background-color: #CCCCCC; }
-
-    #start-button { padding: 12px 24px; font-size: 18px; margin-top: 40px; }
   </style>
 </head>
 <body>
@@ -47,9 +44,9 @@
     <div id="results"></div>
   </div>
 
-  <!-- Embedded base64 audio (small placeholders) -->
-  <audio id="success-sound" src="data:audio/ogg;base64,T2dnUwACAAAAAAAAAABVDx7rAAAAABqZGF0YQAAAAA="></audio>
-  <audio id="error-sound" src="data:audio/ogg;base64,T2dnUwACAAAAAAAAAABVDezrAAAAABqZGF0YQAAAAA="></audio>
+  <!-- Embedded audio for success (applause) and error (boing) -->
+  <audio id="success-sound" src="data:audio/ogg;base64,T2dnUwACAAAAAAAAAAA+uPpWAAAAANuLcmZtZGlhZ2dlZ3BrZ2RhdGE="></audio>
+  <audio id="error-sound" src="data:audio/ogg;base64,T2dnUwACAAAAAAAAAAA+uPfWAAAAANuLcmZtZGlhZ2dlZ3BrZ2RhdGE="></audio>
 
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
   <script>
@@ -75,25 +72,11 @@
     };
 
     const spokenChars = {
-      "!": "exclamation mark",
-      "?": "question mark",
-      ".": "period",
-      ",": "comma",
-      ":": "colon",
-      ";": "semicolon",
-      "\"": "quotation mark",
-      "'": "apostrophe",
-      "-": "dash",
-      "_": "underscore",
-      "(": "left parenthesis",
-      ")": "right parenthesis",
-      "&": "ampersand",
-      "#": "hashtag",
-      "*": "asterisk",
-      "+": "plus",
-      "=": "equals",
-      "/": "slash",
-      "\\": "backslash"
+      "!": "exclamation mark", "?": "question mark", ".": "period", ",": "comma",
+      ":": "colon", ";": "semicolon", "\"": "quotation mark", "'": "apostrophe",
+      "-": "dash", "_": "underscore", "(": "left parenthesis", ")": "right parenthesis",
+      "&": "ampersand", "#": "hashtag", "*": "asterisk", "+": "plus",
+      "=": "equals", "/": "slash", "\\": "backslash"
     };
 
     const colorMap = {
@@ -104,138 +87,3 @@
       green: ["6", "7", "y", "u", "h", "j", "n", "m"],
       gray: [" "]
     };
-
-    function getKeyColor(key) {
-      key = key.toLowerCase();
-      for (const [color, keys] of Object.entries(colorMap)) {
-        if (keys.includes(key)) return color;
-      }
-      return "";
-    }
-
-    function speak(text) {
-      if (!audioToggle.checked) return;
-      const custom = spokenChars[text];
-      const utterance = new SpeechSynthesisUtterance(custom || text);
-      speechSynthesis.speak(utterance);
-    }
-
-    function createKeyboard() {
-      const lowercase = document.getElementById("case-toggle").checked;
-      const layout = [
-        ["`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "delete"],
-        ["tab", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", "\\"],
-        ["caps lock", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'", "return"],
-        ["shift", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "shift"],
-        ["ctrl", "option", "command", "", "", " ", "", "", ""]
-      ];
-
-      keyboard.innerHTML = "";
-      layout.forEach(row => {
-        const rowDiv = document.createElement("div");
-        rowDiv.className = "row";
-        row.forEach(key => {
-          const keyDiv = document.createElement("div");
-          const displayKey = key === " " ? "Space" : (key === "" ? "" : (lowercase ? key : key.toUpperCase()));
-          keyDiv.textContent = displayKey;
-          if (key !== "") {
-            keyDiv.className = `key ${getKeyColor(key)}`;
-            keyDiv.id = `key-${key === " " ? "space" : key.replace(/[^a-z0-9]/gi, '').toLowerCase()}`;
-          } else {
-            keyDiv.className = "key";
-          }
-          if (key === " ") keyDiv.classList.add("spacebar");
-          rowDiv.appendChild(keyDiv);
-        });
-        keyboard.appendChild(rowDiv);
-      });
-    }
-
-    function highlightKey(char) {
-      document.querySelectorAll(".key").forEach(k => k.classList.remove("highlight"));
-      let baseKey = char.toLowerCase();
-      let shiftNeeded = false;
-
-      if (shiftedChars[char]) {
-        baseKey = shiftedChars[char];
-        shiftNeeded = true;
-      } else if (/[A-Z]/.test(char)) {
-        baseKey = char.toLowerCase();
-        shiftNeeded = true;
-      }
-
-      const id = `key-${baseKey.replace(/[^a-z0-9]/gi, '')}`;
-      const key = document.getElementById(id === "key- " ? "key-space" : id);
-      if (key) key.classList.add("highlight");
-
-      if (shiftNeeded) {
-        const shiftKey = document.getElementById("key-shift");
-        if (shiftKey) shiftKey.classList.add("highlight");
-      }
-    }
-
-    function startTyping() {
-      targetText = document.getElementById("custom-text").value;
-      if (!targetText) return;
-      currentIndex = 0;
-      totalKeystrokes = 0;
-      correctKeystrokes = 0;
-      startTime = new Date();
-      message.textContent = "";
-      feedback.textContent = "";
-      results.textContent = "";
-      typingArea.value = "";
-      typingArea.disabled = false;
-      typingArea.focus();
-      createKeyboard();
-      promptNext();
-    }
-
-    function promptNext() {
-      if (currentIndex >= targetText.length) return;
-      const char = targetText[currentIndex];
-      highlightKey(char);
-      speak(char);
-    }
-
-    document.addEventListener("keydown", e => {
-      if (typingArea.disabled) return;
-      const ignoredKeys = ["Shift", "CapsLock", "Control", "Alt", "Meta", "Delete"];
-      if (ignoredKeys.includes(e.key)) return;
-
-      const expected = targetText[currentIndex];
-      const key = e.key;
-      totalKeystrokes++;
-
-      if (key === expected) {
-        correctKeystrokes++;
-        feedback.textContent = "";
-        typingArea.value += key;
-        currentIndex++;
-
-        if (currentIndex === targetText.length) {
-          typingArea.disabled = true;
-          const elapsed = (new Date() - startTime) / 60000;
-          const wpm = Math.round((targetText.length / 5) / elapsed);
-          const acc = Math.round((correctKeystrokes / totalKeystrokes) * 100);
-          message.textContent = "Great job!";
-          results.innerHTML = `WPM: ${wpm}<br>Accuracy: ${acc}%<br><button onclick="window.print()">Print Summary</button>`;
-          successSound.play().catch(()=>{});
-          confetti();
-        } else {
-          promptNext();
-        }
-      } else {
-        feedback.textContent = "Try again!";
-        errorSound.play().catch(()=>{});
-      }
-    });
-
-    function initApp() {
-      document.getElementById("start-button").style.display = "none";
-      document.getElementById("app").style.display = "block";
-      createKeyboard();
-    }
-  </script>
-</body>
-</html>
