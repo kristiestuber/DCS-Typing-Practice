@@ -44,7 +44,7 @@
     <div id="results"></div>
   </div>
 
-  <!-- Embedded audio links -->
+  <!-- Sound & confetti scripts -->
   <audio id="success-sound">
     <source src="https://actions.google.com/sounds/v1/human_voices/applause_1.ogg" type="audio/ogg">
     <source src="https://actions.google.com/sounds/v1/human_voices/applause_1.mp3" type="audio/mpeg">
@@ -53,8 +53,8 @@
     <source src="https://actions.google.com/sounds/v1/cartoon/cartoon_boing.ogg" type="audio/ogg">
     <source src="https://actions.google.com/sounds/v1/cartoon/cartoon_boing.mp3" type="audio/mpeg">
   </audio>
-
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  <script>
 const typingArea = document.getElementById("typing-area");
 const keyboard = document.getElementById("keyboard");
 const message = document.getElementById("message");
@@ -140,7 +140,6 @@ function createKeyboard() {
     keyboard.appendChild(rowDiv);
   });
 }
-
 function highlightKey(char) {
   document.querySelectorAll(".key").forEach(k => k.classList.remove("highlight"));
   let baseKey = char.toLowerCase();
@@ -226,5 +225,6 @@ function initApp() {
   document.getElementById("app").style.display = "block";
   createKeyboard();
 }
-
-
+</script>
+</body>
+</html>
