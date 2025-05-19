@@ -103,7 +103,9 @@ function getKeyColor(key) {
 
 function speak(char) {
   if (!audioToggle.checked) return;
-  if (/[A-Z]/.test(char)) {
+  if (char === " ") {
+    speechSynthesis.speak(new SpeechSynthesisUtterance("space"));
+  } else if (/[A-Z]/.test(char)) {
     speechSynthesis.speak(new SpeechSynthesisUtterance("capital " + char));
   } else {
     const word = spokenChars[char] || char;
