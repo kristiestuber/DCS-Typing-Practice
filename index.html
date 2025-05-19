@@ -163,8 +163,40 @@ function createKeyboard() {
       keyDiv.textContent = displayKey;
       if (key !== "") {
         keyDiv.className = `key ${getKeyColor(key)}`;
-      let keyId = key === " " ? "space" : key.toLowerCase();
-keyId = keyId.replace(/[^a-z0-9]/gi, ''); // Strip special characters for ID safety
+     const specialKeyMap = {
+  "`": "backtick",
+  "~": "tilde",
+  "-": "dash",
+  "_": "underscore",
+  "=": "equals",
+  "+": "plus",
+  "[": "bracketleft",
+  "]": "bracketright",
+  "{": "braceleft",
+  "}": "braceright",
+  "\\": "backslash",
+  "|": "pipe",
+  ";": "semicolon",
+  ":": "colon",
+  "'": "apostrophe",
+  "\"": "quote",
+  ",": "comma",
+  "<": "lessthan",
+  ".": "period",
+  ">": "greaterthan",
+  "/": "slash",
+  "?": "question"
+};
+
+let keyId;
+if (key === " ") {
+  keyId = "space";
+} else if (specialKeyMap[key]) {
+  keyId = specialKeyMap[key];
+} else {
+  keyId = key.toLowerCase().replace(/[^a-z0-9]/gi, '');
+}
+
 keyDiv.id = `key-${keyId}`;
       } else {
         keyDiv.className = "key";
