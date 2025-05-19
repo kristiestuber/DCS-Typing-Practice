@@ -48,6 +48,202 @@
     }
   </style>
 </head>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+<audio id="success-sound">
+  <source src="https://actions.google.com/sounds/v1/human_voices/kids_cheer.ogg" type="audio/ogg">
+  <source src="https://actions.google.com/sounds/v1/human_voices/kids_cheer.mp3" type="audio/mpeg">
+</audio>
+<audio id="error-sound">
+  <source src="https://actions.google.com/sounds/v1/cartoon/cartoon_boing.ogg" type="audio/ogg">
+  <source src="https://actions.google.com/sounds/v1/cartoon/cartoon_boing.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const shiftedChars = {
+  "!": "1", "@": "2", "#": "3", "$": "4", "%": "5", "^": "6",
+  "&": "7", "*": "8", "(": "9", ")": "0", "_": "-", "+": "=",
+  "{": "[", "}": "]", "|": "\\", ":": ";", "\"": "'", "<": ",", ">": ".", "?": "/"
+};
+
+const spokenChars = {
+  "!": "exclamation mark", "?": "question mark", ".": "period", ",": "comma",
+  ":": "colon", ";": "semicolon", "\"": "quotation mark", "'": "apostrophe",
+  "-": "dash", "_": "underscore", "(": "left parenthesis", ")": "right parenthesis",
+  "&": "ampersand", "#": "hashtag", "*": "asterisk", "+": "plus",
+  "=": "equals", "/": "slash", "\\": "backslash"
+};
+
+const specialKeyMap = {
+  "`": "backtick", "~": "tilde", "-": "dash", "_": "underscore", "=": "equals",
+  "+": "plus", "[": "bracketleft", "]": "bracketright", "{": "braceleft", "}": "braceright",
+  "\\": "backslash", "|": "pipe", ";": "semicolon", ":": "colon", "'": "apostrophe",
+  "\"": "quote", ",": "comma", "<": "lessthan", ".": "period", ">": "greaterthan",
+  "/": "slash", "?": "question"
+};
+
+let targetText = "";
+let currentIndex = 0;
+let startTime = null;
+let totalKeystrokes = 0;
+let correctKeystrokes = 0;
+
+function createKeyboard() {
+  const layout = [
+    ["`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "delete"],
+    ["tab", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", "\\"],
+    ["caps lock", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'", "return"],
+    ["shift", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "shift"],
+    ["ctrl", "option", "command", " ", "command", "option"]
+  ];
+  const keyboard = document.getElementById("keyboard");
+  const lowercase = document.getElementById("case-toggle").checked;
+  const colorMap = {
+    lightblue: ["`", "1", "tab", "q", "caps lock", "a", "shift", "z", "ctrl", "option", "0", ";", "/", "'", "-", "=", "delete", "p", "[", "]", "\\", "return"],
+    yellow: ["2", "w", "s", "x", "command", "9", "o", "l", "."],
+    pink: ["3", "e", "d", "c", "8", "i", "k", ","],
+    orange: ["4", "5", "r", "t", "f", "g", "v", "b"],
+    green: ["6", "7", "y", "u", "h", "j", "n", "m"],
+    gray: [" "]
+  };
+  keyboard.innerHTML = "";
+  layout.forEach(row => {
+    const rowDiv = document.createElement("div");
+    rowDiv.className = "row";
+    row.forEach(key => {
+      const keyDiv = document.createElement("div");
+      const displayKey = key === " " ? "Space" : (key === "" ? "" : (lowercase ? key : key.toUpperCase()));
+      keyDiv.textContent = displayKey;
+      let keyId;
+      if (key === " ") {
+        keyId = "space";
+      } else if (specialKeyMap[key]) {
+        keyId = specialKeyMap[key];
+      } else {
+        keyId = key.toLowerCase().replace(/[^a-z0-9]/gi, '');
+      }
+      keyDiv.id = `key-${keyId}`;
+      const color = Object.entries(colorMap).find(([, keys]) => keys.includes(key.toLowerCase()));
+      if (color) keyDiv.classList.add("key", color[0]);
+      else keyDiv.classList.add("key");
+      if (key === " ") keyDiv.classList.add("spacebar");
+      rowDiv.appendChild(keyDiv);
+    });
+    keyboard.appendChild(rowDiv);
+  });
+}
+
+function speak(char) {
+  if (!document.getElementById("audio-toggle").checked) return;
+  if (char === " ") {
+    speechSynthesis.speak(new SpeechSynthesisUtterance("space"));
+  } else if (/[A-Z]/.test(char)) {
+    speechSynthesis.speak(new SpeechSynthesisUtterance("capital " + char));
+  } else {
+    const word = spokenChars[char] || char;
+    speechSynthesis.speak(new SpeechSynthesisUtterance(word));
+  }
+}
+
+function highlightKey(char) {
+  document.querySelectorAll(".key").forEach(k => k.classList.remove("highlight"));
+  let baseKey = char.toLowerCase();
+  let shiftNeeded = false;
+  if (shiftedChars[char]) {
+    baseKey = shiftedChars[char];
+    shiftNeeded = true;
+  } else if (/[A-Z]/.test(char)) {
+    baseKey = char.toLowerCase();
+    shiftNeeded = true;
+  }
+  let keyId;
+  if (baseKey === " ") {
+    keyId = "space";
+  } else if (specialKeyMap[baseKey]) {
+    keyId = specialKeyMap[baseKey];
+  } else {
+    keyId = baseKey.replace(/[^a-z0-9]/gi, '');
+  }
+  const key = document.getElementById(`key-${keyId}`);
+  if (key) key.classList.add("highlight");
+  if (shiftNeeded) {
+    const shiftKey = document.getElementById("key-shift");
+    if (shiftKey) shiftKey.classList.add("highlight");
+  }
+}
+
+function startTyping() {
+  targetText = document.getElementById("custom-text").value;
+  if (!targetText) return;
+  currentIndex = 0;
+  totalKeystrokes = 0;
+  correctKeystrokes = 0;
+  startTime = new Date();
+  document.getElementById("message").textContent = "";
+  document.getElementById("feedback").textContent = "";
+  document.getElementById("results").textContent = "";
+  const typingArea = document.getElementById("typing-area");
+  typingArea.value = "";
+  typingArea.disabled = false;
+  typingArea.focus();
+  createKeyboard();
+  promptNext();
+}
+
+function promptNext() {
+  if (currentIndex >= targetText.length) return;
+  const char = targetText[currentIndex];
+  highlightKey(char);
+  speak(char);
+}
+
+document.addEventListener("keydown", e => {
+  const typingArea = document.getElementById("typing-area");
+  if (typingArea.disabled) return;
+  const ignored = ["Shift", "CapsLock", "Control", "Alt", "Meta", "Delete"];
+  if (ignored.includes(e.key)) return;
+  const expected = targetText[currentIndex];
+  const key = e.key;
+  totalKeystrokes++;
+  if (key === expected) {
+    correctKeystrokes++;
+    document.getElementById("feedback").textContent = "";
+    typingArea.value += key;
+    currentIndex++;
+    if (currentIndex === targetText.length) {
+      typingArea.disabled = true;
+      const elapsed = (new Date() - startTime) / 60000;
+      const wpm = Math.round((targetText.length / 5) / elapsed);
+      const acc = Math.round((correctKeystrokes / totalKeystrokes) * 100);
+      document.getElementById("message").textContent = "Great job!";
+      document.getElementById("results").innerHTML = `WPM: ${wpm}<br>Accuracy: ${acc}%<br><button onclick="window.print()">Print Summary</button>`;
+      document.getElementById("success-sound").play().catch(() => {});
+      confetti();
+    } else {
+      promptNext();
+    }
+  } else {
+    document.getElementById("feedback").textContent = "Try again!";
+    document.getElementById("error-sound").play().catch(() => {});
+  }
+});
+
+function updateKeyboardSize() {
+  const isLarge = document.getElementById("large-toggle").checked;
+  document.body.classList.toggle("large", isLarge);
+}
+
+function toggleDarkMode() {
+  const isDark = document.getElementById("dark-toggle").checked;
+  document.body.classList.toggle("dark", isDark);
+}
+
+function initApp() {
+  document.getElementById("start-button").style.display = "none";
+  document.getElementById("intro-text").style.display = "none";
+  document.getElementById("app").style.display = "block";
+  createKeyboard();
+}
+</script>
 <body>
   <h1>DCS Typing Practice</h1>
 
