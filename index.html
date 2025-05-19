@@ -150,9 +150,11 @@ function createKeyboard() {
 }
 function highlightKey(char) {
   document.querySelectorAll(".key").forEach(k => k.classList.remove("highlight"));
+
   let baseKey = char.toLowerCase();
   let shiftNeeded = false;
 
+  // Handle shifted characters (e.g., ":" is shift + ";")
   if (shiftedChars[char]) {
     baseKey = shiftedChars[char];
     shiftNeeded = true;
@@ -161,10 +163,11 @@ function highlightKey(char) {
     shiftNeeded = true;
   }
 
+  // Special case for space
   const id = baseKey === " " ? "key-space" : `key-${baseKey.replace(/[^a-z0-9]/gi, '')}`;
-  const key = document.getElementById(id === "key- " ? "key-space" : id);
-  if (key) key.classList.add("highlight");
+  const key = document.getElementById(id);
 
+  if (key) key.classList.add("highlight");
   if (shiftNeeded) {
     const shiftKey = document.getElementById("key-shift");
     if (shiftKey) shiftKey.classList.add("highlight");
