@@ -63,8 +63,11 @@
       <label><input type="checkbox" id="case-toggle" onchange="createKeyboard()"> Show lowercase letters</label>
     </div>
     <div class="toggle-container">
-      <label><input type="checkbox" id="audio-toggle" checked> Audio Prompts</label>
-    </div>
+  <label><input type="checkbox" id="large-toggle" onchange="updateKeyboardSize()"> Large Keyboard</label>
+</div>
+<div class="toggle-container">
+  <label><input type="checkbox" id="dark-toggle" onchange="toggleDarkMode()"> Dark Mode</label>
+</div>
     <input id="typing-area" disabled onkeydown="return false;">
     <div id="keyboard"></div>
     <p id="message"></p>
