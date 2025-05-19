@@ -138,7 +138,9 @@ function createKeyboard() {
       keyDiv.textContent = displayKey;
       if (key !== "") {
         keyDiv.className = `key ${getKeyColor(key)}`;
-        keyDiv.id = `key-${key === " " ? "space" : key.replace(/[^a-z0-9]/gi, '').toLowerCase()}`;
+      let keyId = key === " " ? "space" : key.toLowerCase();
+keyId = keyId.replace(/[^a-z0-9]/gi, ''); // Strip special characters for ID safety
+keyDiv.id = `key-${keyId}`;
       } else {
         keyDiv.className = "key";
       }
