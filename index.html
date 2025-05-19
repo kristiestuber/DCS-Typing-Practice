@@ -27,18 +27,32 @@
   </style>
 </head>
 <body>
-  <div id="intro-text" style="max-width: 600px; margin: 0 auto; text-align: left; padding-bottom: 20px;">
-  <h2>Welcome to DCS Typing Practice</h2>
-  <p>This tool is designed to provide structured, error-free typing practice for students. It’s especially helpful for students who benefit from visual key prompts, audio support, and one-key-at-a-time learning — modeled after the Just My Type program.</p>
-  <strong>To use:</strong>
-  <ol>
-    <li>Click <strong>“Start”</strong> below to begin.</li>
-    <li>Type the sentence, phrase, or passage you want the student to practice.</li>
+ <div id="intro-text" style="max-width: 650px; margin: 0 auto 30px auto; text-align: left; background-color: #ffffff; padding: 20px 25px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.05); font-size: 16px; line-height: 1.6;">
+  <h2 style="margin-top: 0;">Welcome to DCS Typing Practice</h2>
+  <p>This tool provides structured, error-free typing practice for students. It’s based on the Just My Type program and is ideal for students who benefit from:</p>
+  <ul style="padding-left: 20px;">
+    <li>One-key-at-a-time typing</li>
+    <li>Visual key highlighting</li>
+    <li>Spoken prompts and feedback</li>
+  </ul>
+  <p><strong>How to use:</strong></p>
+  <ul style="padding-left: 20px;">
+    <li>Click <strong>“Start”</strong> to begin.</li>
+    <li>Type the message you want your student to practice.</li>
     <li>Click <strong>“Start Typing”</strong>.</li>
-    <li>The student will retype the text with support and feedback after each keystroke.</li>
-  </ol>
-  <p>When finished, WPM and accuracy will display, and a summary can be printed.</p>
+    <li>The student will type the message one letter at a time with built-in support:
+      <ul style="padding-left: 20px; list-style-type: circle;">
+        <li>Only the correct key is accepted</li>
+        <li>Keys are highlighted</li>
+        <li>Letters and punctuation are spoken aloud</li>
+        <li>Errors trigger a sound and message</li>
+        <li>WPM and accuracy are shown when complete</li>
+      </ul>
+    </li>
+  </ul>
+  <p>A print summary is available at the end, along with confetti and a celebration sound for added fun!</p>
 </div>
+
   <button id="start-button" onclick="initApp()">Click to Start</button>
 
   <div id="app" style="display:none;">
