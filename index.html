@@ -61,9 +61,6 @@
     <label><input type="checkbox" id="audio-toggle" checked> Audio Prompts</label>
   </div>
   <div class="toggle-container">
-    <label><input type="checkbox" id="large-toggle" onchange="updateKeyboardSize()"> Large Keyboard</label>
-  </div>
-  <div class="toggle-container">
     <label><input type="checkbox" id="dark-toggle" onchange="toggleDarkMode()"> Dark Mode</label>
   </div>
 
@@ -250,11 +247,6 @@ document.addEventListener("keydown", e => {
     document.getElementById("error-sound").play().catch(() => {});
   }
 });
-
-function updateKeyboardSize() {
-  const isLarge = document.getElementById("large-toggle").checked;
-  document.body.classList.toggle("large", isLarge);
-}
 
 function toggleDarkMode() {
   const isDark = document.getElementById("dark-toggle").checked;
