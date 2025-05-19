@@ -45,8 +45,9 @@
   </div>
 
   <!-- Sound & confetti scripts -->
-  <audio id="success-sound">
-  <source src="https://cdn.pixabay.com/download/audio/2022/02/24/audio_20b104464b.mp3?filename=small-applause-6695.mp3" type="audio/mpeg">
+ <audio id="success-sound">
+  <source src="https://actions.google.com/sounds/v1/human_voices/kids_cheer.ogg" type="audio/ogg">
+  <source src="https://actions.google.com/sounds/v1/human_voices/kids_cheer.mp3" type="audio/mpeg">
 </audio>
   <audio id="error-sound">
     <source src="https://actions.google.com/sounds/v1/cartoon/cartoon_boing.ogg" type="audio/ogg">
@@ -152,7 +153,7 @@ function highlightKey(char) {
     shiftNeeded = true;
   }
 
-  const id = `key-${baseKey.replace(/[^a-z0-9]/gi, '')}`;
+  const id = baseKey === " " ? "key-space" : `key-${baseKey.replace(/[^a-z0-9]/gi, '')}`;
   const key = document.getElementById(id === "key- " ? "key-space" : id);
   if (key) key.classList.add("highlight");
 
