@@ -49,6 +49,30 @@
   </style>
 </head>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  <div id="app" style="display:none;">
+  <label for="custom-text">Enter Text for Typing Practice:</label><br>
+  <textarea id="custom-text" rows="3"></textarea><br>
+  <button onclick="startTyping()">Start Typing</button>
+
+  <div class="toggle-container">
+    <label><input type="checkbox" id="case-toggle" onchange="createKeyboard()"> Show lowercase letters</label>
+  </div>
+  <div class="toggle-container">
+    <label><input type="checkbox" id="audio-toggle" checked> Audio Prompts</label>
+  </div>
+  <div class="toggle-container">
+    <label><input type="checkbox" id="large-toggle" onchange="updateKeyboardSize()"> Large Keyboard</label>
+  </div>
+  <div class="toggle-container">
+    <label><input type="checkbox" id="dark-toggle" onchange="toggleDarkMode()"> Dark Mode</label>
+  </div>
+
+  <input id="typing-area" disabled onkeydown="return false;">
+  <div id="keyboard"></div>
+  <p id="message"></p>
+  <p id="feedback"></p>
+  <div id="results"></div>
+</div>
 <audio id="success-sound">
   <source src="https://actions.google.com/sounds/v1/human_voices/kids_cheer.ogg" type="audio/ogg">
   <source src="https://actions.google.com/sounds/v1/human_voices/kids_cheer.mp3" type="audio/mpeg">
