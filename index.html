@@ -111,7 +111,30 @@ const spokenChars = {
   "&": "ampersand", "#": "hashtag", "*": "asterisk", "+": "plus",
   "=": "equals", "/": "slash", "\\": "backslash"
 };
-
+const specialKeyMap = {
+  "`": "backtick",
+  "~": "tilde",
+  "-": "dash",
+  "_": "underscore",
+  "=": "equals",
+  "+": "plus",
+  "[": "bracketleft",
+  "]": "bracketright",
+  "{": "braceleft",
+  "}": "braceright",
+  "\\": "backslash",
+  "|": "pipe",
+  ";": "semicolon",
+  ":": "colon",
+  "'": "apostrophe",
+  "\"": "quote",
+  ",": "comma",
+  "<": "lessthan",
+  ".": "period",
+  ">": "greaterthan",
+  "/": "slash",
+  "?": "question"
+};
 const colorMap = {
 lightblue: [
   "`", "1", "tab", "q", "caps lock", "a", "shift", "z", "ctrl", "option", "0", ";", "/", "'",
@@ -213,7 +236,6 @@ function highlightKey(char) {
   let baseKey = char.toLowerCase();
   let shiftNeeded = false;
 
-  // Handle shifted characters (e.g., ":" is shift + ";")
   if (shiftedChars[char]) {
     baseKey = shiftedChars[char];
     shiftNeeded = true;
@@ -222,11 +244,18 @@ function highlightKey(char) {
     shiftNeeded = true;
   }
 
-  // Special case for space
-  const id = baseKey === " " ? "key-space" : `key-${baseKey.replace(/[^a-z0-9]/gi, '')}`;
-  const key = document.getElementById(id);
+  let keyId;
+  if (baseKey === " ") {
+    keyId = "space";
+  } else if (specialKeyMap[baseKey]) {
+    keyId = specialKeyMap[baseKey];
+  } else {
+    keyId = baseKey.replace(/[^a-z0-9]/gi, '');
+  }
 
+  const key = document.getElementById(`key-${keyId}`);
   if (key) key.classList.add("highlight");
+
   if (shiftNeeded) {
     const shiftKey = document.getElementById("key-shift");
     if (shiftKey) shiftKey.classList.add("highlight");
