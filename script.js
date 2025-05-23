@@ -1,4 +1,3 @@
-
 const typingArea = document.getElementById("typing-area");
 const keyboard = document.getElementById("keyboard");
 const message = document.getElementById("message");
@@ -11,13 +10,13 @@ const errorSound = document.getElementById("error-sound");
 const shiftedChars = {"!":"1","@":"2","#":"3","$":"4","%":"5","^":"6","&":"7","*":"8","(":"9",")":"0","_":"-", "+":"="};
 const spokenChars = {
   "!":"exclamation mark","?":"question mark",".":"period",",":"comma",":":"colon",";":"semicolon",
-  "\"":"quotation mark","'":"apostrophe","-":"dash","_":"underscore","(":"left parenthesis",
+  "\\"":"quotation mark","'":"apostrophe","-":"dash","_":"underscore","(":"left parenthesis",
   ")":"right parenthesis","&":"ampersand","#":"hashtag","*":"asterisk","+":"plus","=":"equals",
-  "/":"slash","\\":"backslash"
+  "/":"slash","\\\\":"backslash"
 };
 
 const colorMap = {
-  lightblue: ["`", "tab", "caps lock", "shift", "ctrl", "option", "p", ";", "'", "/", "delete", "\\", "return"],
+  lightblue: ["`", "tab", "caps lock", "shift", "ctrl", "option", "p", ";", "'", "/", "delete", "\\\\", "return"],
   yellow: ["2", "w", "s", "o", "l", "command", "9"],
   pink: ["3", "e", "d", "c", "8", "i", "k", ","],
   orange: ["4", "5", "r", "t", "f", "g", "v", "b"],
@@ -43,7 +42,7 @@ function createKeyboard() {
   const lowercase = document.getElementById("case-toggle").checked;
   const layout = [
     ["`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "delete"],
-    ["tab", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", "\\"],
+    ["tab", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", "\\\\"],
     ["caps lock", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'", "return"],
     ["shift", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "shift"],
     ["ctrl", "option", "command", " ", "command", "option"]
@@ -54,15 +53,13 @@ function createKeyboard() {
     const rowDiv = document.createElement("div");
     rowDiv.className = "row";
     row.forEach(key => {
+      const cleanKey = key === " " ? "space" : key.replace(/[^a-z0-9]/gi, '').toLowerCase();
       const keyDiv = document.createElement("div");
       const displayKey = key === " " ? "Space" : (lowercase ? key : key.toUpperCase());
+      const colorClass = getKeyColor(key);
+      keyDiv.className = `key ${colorClass}`;
       keyDiv.textContent = displayKey;
-      if (key !== "") {
-        keyDiv.className = `key ${getKeyColor(key)}`;
-        keyDiv.id = `key-${key === " " ? "space" : key.replace(/[^a-z0-9]/gi, '').toLowerCase()}`;
-      } else {
-        keyDiv.className = "key";
-      }
+      keyDiv.id = `key-${cleanKey}`;
       if (key === " ") keyDiv.classList.add("spacebar");
       rowDiv.appendChild(keyDiv);
     });
