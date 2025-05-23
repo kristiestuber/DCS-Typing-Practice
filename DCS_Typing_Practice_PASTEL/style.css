@@ -1,0 +1,21 @@
+
+body { font-family: sans-serif; padding: 20px; background-color: #f0f0f0; text-align: center; }
+h1 { font-size: 2em; margin-bottom: 0.5em; }
+textarea, #typing-area { width: 80%; padding: 10px; font-size: 18px; margin-bottom: 20px; }
+#keyboard { display: flex; flex-direction: column; gap: 5px; margin: 0 auto 20px; width: max-content; max-width: 100%; }
+.row { display: flex; gap: 5px; justify-content: center; flex-wrap: nowrap; }
+.key { padding: 10px; border: 1px solid #ccc; text-align: center; font-size: 18px; border-radius: 4px; min-width: 32px; }
+.spacebar { min-width: 300px; }
+.highlight { background-color: black !important; color: white !important; }
+.toggle-container { margin-bottom: 10px; }
+#message { font-weight: bold; font-size: 20px; color: green; }
+#feedback { font-weight: bold; color: red; margin-top: 10px; }
+#results { margin-top: 10px; }
+
+/* Bright pastel color codes */
+.lightblue { background-color: #A7D3F3; }
+.yellow { background-color: #FFF4A3; }
+.pink { background-color: #FDC5D5; }
+.orange { background-color: #FFD59E; }
+.green { background-color: #B7E4C7; }
+.gray { background-color: #D3D3D3; }
