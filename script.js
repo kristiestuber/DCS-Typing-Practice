@@ -16,7 +16,7 @@ let correctKeystrokes = 0;
 const shiftedChars = {"!":"1","@":"2","#":"3","$":"4","%":"5","^":"6","&":"7","*":"8","(":"9",")":"0","_":"-", "+":"="};
 const spokenChars = {
   "!":"exclamation mark","?":"question mark",".":"period",",":"comma",":":"colon",";":"semicolon",
-  "\\"":"quotation mark","'":"apostrophe","-":"dash","_":"underscore","(":"left parenthesis",
+  '"': "quotation mark","'":"apostrophe","-":"dash","_":"underscore","(":"left parenthesis",
   ")":"right parenthesis","&":"ampersand","#":"hashtag","*":"asterisk","+":"plus","=":"equals",
   "/":"slash","\\\\":"backslash"
 };
