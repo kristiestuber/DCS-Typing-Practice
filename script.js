@@ -17,16 +17,13 @@ const spokenChars = {
 };
 
 const colorMap = {
-  lightblue: ["`", "1", "tab", "q", "caps lock", "a", "shift", "z", "ctrl", "option", "0", ";", "/", "'", "-", "=", "delete", "p", "[", "]", "\\", "return"],
-  yellow: ["2", "w", "s", "x", "command", "9", "o", "l", "."],
+  lightblue: ["`", "tab", "caps lock", "shift", "ctrl", "option", "p", ";", "'", "/", "delete", "\\", "return"],
+  yellow: ["2", "w", "s", "o", "l", "command", "9"],
   pink: ["3", "e", "d", "c", "8", "i", "k", ","],
   orange: ["4", "5", "r", "t", "f", "g", "v", "b"],
   green: ["6", "7", "y", "u", "h", "j", "n", "m"],
   gray: [" "]
 };
-
-let targetText = "", currentIndex = 0, startTime = null;
-let totalKeystrokes = 0, correctKeystrokes = 0;
 
 function getKeyColor(key) {
   key = key.toLowerCase();
@@ -45,20 +42,27 @@ function speak(text) {
 function createKeyboard() {
   const lowercase = document.getElementById("case-toggle").checked;
   const layout = [
-    ["tab","q","w","e","r","t","y","u","i","o","p"],
-    ["caps lock","a","s","d","f","g","h","j","k","l"],
-    ["shift","z","x","c","v","b","n","m",".",",","!","?"],
-    ["ctrl","option","command"," ","command","option"]
+    ["`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "delete"],
+    ["tab", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", "\\"],
+    ["caps lock", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'", "return"],
+    ["shift", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "shift"],
+    ["ctrl", "option", "command", " ", "command", "option"]
   ];
+
   keyboard.innerHTML = "";
   layout.forEach(row => {
     const rowDiv = document.createElement("div");
     rowDiv.className = "row";
     row.forEach(key => {
       const keyDiv = document.createElement("div");
-      keyDiv.className = "key " + getKeyColor(key);
-      keyDiv.textContent = key === " " ? "Space" : (lowercase ? key : key.toUpperCase());
-      keyDiv.id = `key-${key === " " ? "space" : key.replace(/[^a-z0-9]/gi, '').toLowerCase()}`;
+      const displayKey = key === " " ? "Space" : (lowercase ? key : key.toUpperCase());
+      keyDiv.textContent = displayKey;
+      if (key !== "") {
+        keyDiv.className = `key ${getKeyColor(key)}`;
+        keyDiv.id = `key-${key === " " ? "space" : key.replace(/[^a-z0-9]/gi, '').toLowerCase()}`;
+      } else {
+        keyDiv.className = "key";
+      }
       if (key === " ") keyDiv.classList.add("spacebar");
       rowDiv.appendChild(keyDiv);
     });
