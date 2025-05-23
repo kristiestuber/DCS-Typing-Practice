@@ -7,6 +7,12 @@ const audioToggle = document.getElementById("audio-toggle");
 const successSound = document.getElementById("success-sound");
 const errorSound = document.getElementById("error-sound");
 
+let targetText = "";
+let currentIndex = 0;
+let startTime = null;
+let totalKeystrokes = 0;
+let correctKeystrokes = 0;
+
 const shiftedChars = {"!":"1","@":"2","#":"3","$":"4","%":"5","^":"6","&":"7","*":"8","(":"9",")":"0","_":"-", "+":"="};
 const spokenChars = {
   "!":"exclamation mark","?":"question mark",".":"period",",":"comma",":":"colon",";":"semicolon",
