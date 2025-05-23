@@ -1,11 +1,42 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <title>DCS Typing Practice</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <h1>DCS Typing Practice</h1>
-  <p>This is a placeholder. The full version includes style.css and script.js.</p>
+  <div id="intro-text">
+    <p>Welcome! Enter a sentence for the student to type. The program will guide them letter by letter.</p>
+    <p>After you click "Start Typing," the student will hear each prompt and see which key to press next. If they press the wrong key, the program will give immediate feedback. Accuracy and WPM will be shown at the end, and a summary can be printed.</p>
+  </div>
+  <button id="start-button" onclick="initApp()">Click to Start</button>
+  <div id="app" style="display:none;">
+    <textarea id="custom-text" rows="3" placeholder="Type your practice sentence here..."></textarea><br>
+    <button onclick="startTyping()">Start Typing</button>
+    <div class="toggle-container">
+      <label><input type="checkbox" id="case-toggle" onchange="createKeyboard()"> Show lowercase letters</label>
+    </div>
+    <div class="toggle-container">
+      <label><input type="checkbox" id="audio-toggle" checked> Audio Prompts</label>
+    </div>
+    <input id="typing-area" disabled onkeydown="return false;">
+    <div id="keyboard"></div>
+    <p id="message"></p>
+    <p id="feedback"></p>
+    <div id="results"></div>
+  </div>
+  <audio id="success-sound">
+    <source src="https://actions.google.com/sounds/v1/human_voices/kids_cheer.ogg" type="audio/ogg">
+    <source src="https://actions.google.com/sounds/v1/human_voices/kids_cheer.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="error-sound">
+    <source src="https://actions.google.com/sounds/v1/cartoon/cartoon_boing.ogg" type="audio/ogg">
+    <source src="https://actions.google.com/sounds/v1/cartoon/cartoon_boing.mp3" type="audio/mpeg">
+  </audio>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
