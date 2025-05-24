@@ -13,7 +13,12 @@ let startTime = null;
 let totalKeystrokes = 0;
 let correctKeystrokes = 0;
 
-const shiftedChars = {"!":"1","@":"2","#":"3","$":"4","%":"5","^":"6","&":"7","*":"8","(":"9",")":"0","_":"-", "+":"="};
+const shiftedChars = {
+  "!":"1","@":"2","#":"3","$":"4","%":"5","^":"6","&":"7",
+  "*":"8","(":"9",")":"0","_":"-","+":"=","{":"[","}":"]",
+  "|":"\\",":":";","\"":"'","<":",",">":".","?":"/"
+};
+
 const spokenChars = {
   "!":"exclamation mark","?":"question mark",".":"period",",":"comma",":":"colon",";":"semicolon",
   '"':"quotation mark","'":"apostrophe","-":"dash","_":"underscore","(":"left parenthesis",
@@ -75,9 +80,10 @@ function createKeyboard() {
 
 function highlightKey(char) {
   document.querySelectorAll(".key").forEach(k => k.classList.remove("highlight"));
-  let keyId = char.toLowerCase().replace(/[^a-z0-9]/gi, '');
-  if (char === " ") keyId = "space";
-  const key = document.getElementById(`key-${keyId}`);
+  let baseKey = char.toLowerCase();
+  if (shiftedChars[char]) baseKey = shiftedChars[char]; // For !@#$ etc.
+  if (char === " ") baseKey = "space";
+  const key = document.getElementById(`key-${baseKey.replace(/[^a-z0-9]/gi, '')}`);
   if (key) key.classList.add("highlight");
   if (/[A-Z]/.test(char) || shiftedChars[char]) {
     const shiftKey = document.getElementById("key-shift");
@@ -130,8 +136,8 @@ document.addEventListener("keydown", e => {
       const acc = Math.round((correctKeystrokes / totalKeystrokes) * 100);
       message.textContent = "Great job!";
       results.innerHTML = `WPM: ${wpm}<br>Accuracy: ${acc}%<br><button onclick="window.print()">Print Summary</button>`;
-      successSound.play().catch(() => {});
       confetti();
+      document.getElementById('applause-sound')?.play().catch(() => {});
     } else {
       promptNext();
     }
