@@ -16,13 +16,13 @@ let correctKeystrokes = 0;
 const shiftedChars = {"!":"1","@":"2","#":"3","$":"4","%":"5","^":"6","&":"7","*":"8","(":"9",")":"0","_":"-", "+":"="};
 const spokenChars = {
   "!":"exclamation mark","?":"question mark",".":"period",",":"comma",":":"colon",";":"semicolon",
-  '"': "quotation mark","'":"apostrophe","-":"dash","_":"underscore","(":"left parenthesis",
+  '"':"quotation mark","'":"apostrophe","-":"dash","_":"underscore","(":"left parenthesis",
   ")":"right parenthesis","&":"ampersand","#":"hashtag","*":"asterisk","+":"plus","=":"equals",
-  "/":"slash","\\\\":"backslash"
+  "/":"slash","\\":"backslash"
 };
 
 const colorMap = {
-  lightblue: ["`", "tab", "caps lock", "shift", "ctrl", "option", "p", ";", "'", "/", "delete", "\\\\", "return", "1", "q", "a", "z", "x", "0", "-", "=", "[", "]"],
+  lightblue: ["`", "tab", "caps lock", "shift", "ctrl", "option", "p", ";", "'", "/", "delete", "\\", "return", "1", "q", "a", "z", "x", "0", "-", "=", "[", "]"],
   yellow: ["2", "w", "s", "o", "l", "command", "9", "."],
   pink: ["3", "e", "d", "c", "8", "i", "k", ","],
   orange: ["4", "5", "r", "t", "f", "g", "v", "b"],
@@ -48,7 +48,7 @@ function createKeyboard() {
   const lowercase = document.getElementById("case-toggle").checked;
   const layout = [
     ["`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "delete"],
-    ["tab", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", "\\\\"],
+    ["tab", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", "\\"],
     ["caps lock", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'", "return"],
     ["shift", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "shift"],
     ["ctrl", "option", "command", " ", "command", "option"]
