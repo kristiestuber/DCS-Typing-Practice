@@ -80,11 +80,46 @@ function createKeyboard() {
 
 function highlightKey(char) {
   document.querySelectorAll(".key").forEach(k => k.classList.remove("highlight"));
+
   let baseKey = char.toLowerCase();
-  if (shiftedChars[char]) baseKey = shiftedChars[char]; // For !@#$ etc.
-  if (char === " ") baseKey = "space";
-  const key = document.getElementById(`key-${baseKey.replace(/[^a-z0-9]/gi, '')}`);
+
+  // Handle shifted characters like !, @, :, etc.
+  if (shiftedChars[char]) {
+    baseKey = shiftedChars[char];
+  }
+
+  // Handle space
+  if (char === " ") {
+    baseKey = "space";
+  }
+
+  // Special cleanup for characters with unique DOM ids
+  const specialKeyMap = {
+    ";": "semicolon",
+    ":": "semicolon",
+    "'": "apostrophe",
+    "\"": "quotationmark",
+    ",": "comma",
+    ".": "period",
+    "?": "slash",
+    "/": "slash",
+    "-": "dash",
+    "_": "dash",
+    "=": "equals",
+    "+": "equals",
+    "\\": "backslash",
+    "|": "backslash",
+    "[": "bracketleft",
+    "{": "bracketleft",
+    "]": "bracketright",
+    "}": "bracketright"
+  };
+
+  const keyId = specialKeyMap[char] || baseKey.replace(/[^a-z0-9]/gi, '');
+
+  const key = document.getElementById(`key-${keyId}`);
   if (key) key.classList.add("highlight");
+
   if (/[A-Z]/.test(char) || shiftedChars[char]) {
     const shiftKey = document.getElementById("key-shift");
     if (shiftKey) shiftKey.classList.add("highlight");
