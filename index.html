@@ -7,20 +7,24 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>DCS Typing Practice</h1>
-  <div id="intro-text">
-    <p><strong>Welcome to DCS Typing Practice!</strong></p>
-    <p>This tool is designed to help students practice typing with one-to-one support. Enter the text you'd like your student to type. The program will:</p>
-    <ul style="text-align:left; max-width: 700px; margin: 0 auto;">
-      <li>Speak each letter, symbol, or word aloud</li>
-      <li>Highlight the correct key on an onscreen keyboard</li>
-      <li>Prevent incorrect keystrokes</li>
-      <li>Give instant feedback when an incorrect key is pressed</li>
-      <li>Celebrate success with confetti and applause</li>
-      <li>Display typing accuracy and WPM at the end</li>
-    </ul>
-    <p>Click the button below to get started.</p>
-  </div>
+ <div id="intro-text" style="max-width: 600px; margin: 0 auto; text-align: left; padding-bottom: 20px;">
+  <h2>Welcome to DCS Typing Practice</h2>
+  <p>
+    This tool is designed to provide structured, error-free typing practice for students.
+    It’s especially helpful for students who benefit from visual key prompts, audio support,
+    and one-key-at-a-time learning — modeled after the Just My Type program.
+  </p>
+  <strong>To use:</strong>
+  <ol>
+    <li>Click <strong>“Start”</strong> below to begin.</li>
+    <li>Type the sentence, phrase, or passage you want the student to practice.</li>
+    <li>Click <strong>“Start Typing”</strong>.</li>
+    <li>The student will retype the text with support and feedback after each keystroke.</li>
+  </ol>
+  <p>
+    When finished, WPM and accuracy will display, and a summary can be printed.
+  </p>
+</div>
   <button id="start-button" onclick="initApp()">Click to Start</button>
   <div id="app" style="display:none;">
     <textarea id="custom-text" rows="3" placeholder="Type your practice sentence here..."></textarea><br>
