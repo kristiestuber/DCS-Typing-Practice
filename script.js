@@ -15,7 +15,7 @@ const errorSound = document.getElementById("error-sound");
 
 const shiftedChars = {
   "!": "1", "@": "2", "#": "3", "$": "4", "%": "5", "^": "6", "&": "7",
-  "*": "8", "(": "9", ")": "0", "_": "-", "+": "=", ":": ";", """: "'",
+  "*": "8", "(": "9", ")": "0", "_": "-", "+": "=", ":": ";", "\"": "'",
   "<": ",", ">": ".", "?": "/"
 };
 
@@ -73,7 +73,10 @@ function createKeyboard() {
       keyDiv.textContent = displayKey;
       if (key !== "") {
         keyDiv.className = `key ${getKeyColor(key)}`;
-        keyDiv.id = `key-${key === " " ? "space" : key.replace(/[^a-z0-9]/gi, '').toLowerCase()}`;
+      let idKey = key === " " ? "space" : key.toLowerCase().replace(/[^a-z0-9]/g, code => {
+  return `char${code.charCodeAt(0)}`;
+});
+keyDiv.id = `key-${idKey}`;
       } else {
         keyDiv.className = "key";
       }
@@ -86,8 +89,9 @@ function createKeyboard() {
 
 function highlightKey(char) {
   document.querySelectorAll(".key").forEach(k => k.classList.remove("highlight"));
-  let baseKey = char.toLowerCase();
+  let baseKey = char;
   let shiftNeeded = false;
+
   if (shiftedChars[char]) {
     baseKey = shiftedChars[char];
     shiftNeeded = true;
@@ -95,13 +99,16 @@ function highlightKey(char) {
     baseKey = char.toLowerCase();
     shiftNeeded = true;
   }
-  const keyId = baseKey.replace(/[^a-z0-9]/gi, '');
-  const key = document.getElementById(keyId === " " ? "key-space" : `key-${keyId}`);
+
+  let keyId = baseKey === " " ? "space" : baseKey.toLowerCase().replace(/[^a-z0-9]/g, c => `char${c.charCodeAt(0)}`);
+  const key = document.getElementById(`key-${keyId}`);
   if (key) key.classList.add("highlight");
   if (shiftNeeded) {
     const shiftKey = document.getElementById("key-shift");
     if (shiftKey) shiftKey.classList.add("highlight");
   }
+}
+
 }
 
 function startTyping() {
@@ -157,11 +164,6 @@ document.addEventListener("keydown", e => {
     try { errorSound.play(); } catch {}
   }
 });
-
-function initApp() {
-  document.getElementById("start-button").style.display = "none";
-  document.getElementById("app").style.display = "block";
-  createKeyboard();
 }
 function initApp() {
   document.getElementById("start-button").style.display = "none";
