@@ -81,7 +81,10 @@ function createKeyboard() {
         ? `char${key.charCodeAt(0)}`
         : key.toLowerCase();
 
-keyDiv.className = `key ${getKeyColor(key)}`;
+const color = getKeyColor(key);
+console.log(key, "→", color);  // This is just for debugging
+keyDiv.className = `key ${color}`;
+
       keyDiv.id = `key-${safeKey}`;
       if (key === " ") keyDiv.classList.add("spacebar");
       rowDiv.appendChild(keyDiv);
