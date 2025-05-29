@@ -15,7 +15,7 @@ const errorSound = document.getElementById("error-sound");
 
 const shiftedChars = {
   "!": "1", "@": "2", "#": "3", "$": "4", "%": "5", "^": "6", "&": "7",
-  "*": "8", "(": "9", ")": "0", "_": "-", "+": "=", ":": ";", "\"": "'",
+  "*": "8", "(": "9", ")": "0", "_": "-", "+": "=", ":": ";", "\"": "'", 
   "<": ",", ">": ".", "?": "/", "|": "\\"
 };
 
@@ -41,28 +41,21 @@ const colorMap = {
 
 function getKeyColor(keyId) {
   keyId = keyId.toLowerCase();
-  const colorMap = {
-    lightblue: [
-      "key-1", "key-q", "key-a", "key-z", "key-control", "key-0", "key-minus", "key-equals",
-      "key-tab", "key-capslock", "key-shift", "key-option", "key-p", "key-bracketleft",
-      "key-bracketright", "key-backslash", "key-semicolon", "key-quote", "key-return",
-      "key-slash"
-    ],
-    yellow: [
-      "key-2", "key-w", "key-s", "key-x", "key-command", "key-9", "key-o", "key-l", "key-period"
-    ],
-    pink: ["key-3", "key-e", "key-d", "key-c", "key-8", "key-i", "key-k", "key-comma"],
-    orange: ["key-4", "key-5", "key-r", "key-t", "key-f", "key-g", "key-v", "key-b"],
-    green: ["key-6", "key-7", "key-y", "key-u", "key-h", "key-j", "key-n", "key-m"],
-    gray: ["key-space"]
+  const idMap = {
+    "`": "key-`", "1": "key-1", "2": "key-2", "3": "key-3", "4": "key-4", "5": "key-5", "6": "key-6", "7": "key-7", "8": "key-8", "9": "key-9", "0": "key-0",
+    "-": "key--", "=": "key-=", "tab": "key-tab", "q": "key-q", "w": "key-w", "e": "key-e", "r": "key-r", "t": "key-t", "y": "key-y", "u": "key-u", "i": "key-i",
+    "o": "key-o", "p": "key-p", "[": "key-[", "]": "key-]", "\\": "key-\\", "caps lock": "key-capslock", "a": "key-a", "s": "key-s", "d": "key-d", "f": "key-f",
+    "g": "key-g", "h": "key-h", "j": "key-j", "k": "key-k", "l": "key-l", ";": "key-;", "'": "key-'", "return": "key-return", "shift": "key-shift",
+    "z": "key-z", "x": "key-x", "c": "key-c", "v": "key-v", "b": "key-b", "n": "key-n", "m": "key-m", ",": "key-,", ".": "key-.", "/": "key-/", "control": "key-control",
+    "option": "key-option", "command": "key-command", " ": "key-space"
   };
-
   for (const [color, keys] of Object.entries(colorMap)) {
-    if (keys.includes(keyId)) return color;
+    for (const key of keys) {
+      if (keyId === idMap[key]) return color;
+    }
   }
   return "";
 }
-
 
 function speak(char) {
   if (!audioToggle || !audioToggle.checked) return;
@@ -81,7 +74,7 @@ function createKeyboard() {
     ["tab", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", "\\"],
     ["caps lock", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'", "return"],
     ["shift", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "shift"],
-    ["ctrl", "option", "command", " ", "command", "option"]
+    ["control", "option", "command", " ", "command", "option"]
   ];
   keyboard.innerHTML = "";
   layout.forEach(row => {
@@ -91,17 +84,17 @@ function createKeyboard() {
       const keyDiv = document.createElement("div");
       const displayKey = key === " " ? "Space" : (lowercase ? key : key.toUpperCase());
       keyDiv.textContent = displayKey;
-
-      const safeKey = key === " " ? "space" : key.length === 1 && /[^a-z0-9]/i.test(key)
-        ? `char${key.charCodeAt(0)}`
-        : key.toLowerCase();
-
-const color = getKeyColor(key);
-console.log(key, "→", color);  // This is just for debugging
-const keyId = `key-${idKey}`;
-keyDiv.id = keyId;
-const color = getKeyColor(keyId);
-keyDiv.className = `key ${color}`;
+      const safeKey = key === " " ? "space" : /[^a-z0-9]/i.test(key) ? `char${key.charCodeAt(0)}` : key.toLowerCase();
+      const keyId = `key-${safeKey}`;
+      keyDiv.id = keyId;
+      const color = getKeyColor(keyId);
+      keyDiv.className = `key ${color}`;
+      if (key === " ") keyDiv.classList.add("spacebar");
+      rowDiv.appendChild(keyDiv);
+    });
+    keyboard.appendChild(rowDiv);
+  });
+}
 
 function highlightKey(char) {
   document.querySelectorAll(".key").forEach(k => k.classList.remove("highlight"));
@@ -116,10 +109,7 @@ function highlightKey(char) {
     shiftNeeded = true;
   }
 
-  const safeKey = baseKey === " " ? "space" : /[^a-z0-9]/i.test(baseKey)
-    ? `char${baseKey.charCodeAt(0)}`
-    : baseKey.toLowerCase();
-
+  const safeKey = baseKey === " " ? "space" : /[^a-z0-9]/i.test(baseKey) ? `char${baseKey.charCodeAt(0)}` : baseKey.toLowerCase();
   const key = document.getElementById(`key-${safeKey}`);
   if (key) key.classList.add("highlight");
   if (shiftNeeded) {
