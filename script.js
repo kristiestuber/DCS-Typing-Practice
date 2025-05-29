@@ -28,8 +28,13 @@ const spokenChars = {
 };
 
 const colorMap = {
-  lightblue: ["1", "q", "a", "z", "x", "0", "-", "=", "[", "]"],
-  yellow: ["."],
+  lightblue: [
+    "1", "q", "a", "z", "x", "0", "-", "=", "[", "]",
+    "`", "tab", "caps lock", "shift", "control", "option", "p", ";", "/", "delete", "\\", "return", "'", "shift", "option"
+  ],
+  yellow: [
+    "2", "w", "s", "x", "command", "9", "o", "l", ".", "command"
+  ],
   pink: ["3", "e", "d", "c", "8", "i", "k", ","],
   orange: ["4", "5", "r", "t", "f", "g", "v", "b"],
   green: ["6", "7", "y", "u", "h", "j", "n", "m"],
