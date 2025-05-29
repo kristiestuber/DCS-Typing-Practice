@@ -14,8 +14,8 @@ textarea, #typing-area { width: 80%; padding: 10px; font-size: 18px; margin-bott
 
 /* Bright pastel color codes */
 .lightblue { background-color: #A7D3F3; }
-.yellow { background-color: #FFF4A3; }
-.pink { background-color: #FDC5D5; }
-.orange { background-color: #FFD59E; }
-.green { background-color: #B7E4C7; }
-.gray { background-color: #D3D3D3; }
+.yellow    { background-color: #FFF4A3; }
+.pink      { background-color: #FDC5D5; }
+.orange    { background-color: #FFD59E; }
+.green     { background-color: #B7E4C7; }
+.gray      { background-color: #D3D3D3; }
