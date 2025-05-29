@@ -39,13 +39,30 @@ const colorMap = {
   gray: [" "]
 };
 
-function getKeyColor(key) {
-  key = key.toLowerCase();
+function getKeyColor(keyId) {
+  keyId = keyId.toLowerCase();
+  const colorMap = {
+    lightblue: [
+      "key-1", "key-q", "key-a", "key-z", "key-control", "key-0", "key-minus", "key-equals",
+      "key-tab", "key-capslock", "key-shift", "key-option", "key-p", "key-bracketleft",
+      "key-bracketright", "key-backslash", "key-semicolon", "key-quote", "key-return",
+      "key-slash"
+    ],
+    yellow: [
+      "key-2", "key-w", "key-s", "key-x", "key-command", "key-9", "key-o", "key-l", "key-period"
+    ],
+    pink: ["key-3", "key-e", "key-d", "key-c", "key-8", "key-i", "key-k", "key-comma"],
+    orange: ["key-4", "key-5", "key-r", "key-t", "key-f", "key-g", "key-v", "key-b"],
+    green: ["key-6", "key-7", "key-y", "key-u", "key-h", "key-j", "key-n", "key-m"],
+    gray: ["key-space"]
+  };
+
   for (const [color, keys] of Object.entries(colorMap)) {
-    if (keys.includes(key)) return color;
+    if (keys.includes(keyId)) return color;
   }
   return "";
 }
+
 
 function speak(char) {
   if (!audioToggle || !audioToggle.checked) return;
@@ -81,15 +98,10 @@ function createKeyboard() {
 
 const color = getKeyColor(key);
 console.log(key, "→", color);  // This is just for debugging
+const keyId = `key-${idKey}`;
+keyDiv.id = keyId;
+const color = getKeyColor(keyId);
 keyDiv.className = `key ${color}`;
-
-      keyDiv.id = `key-${safeKey}`;
-      if (key === " ") keyDiv.classList.add("spacebar");
-      rowDiv.appendChild(keyDiv);
-    });
-    keyboard.appendChild(rowDiv);
-  });
-}
 
 function highlightKey(char) {
   document.querySelectorAll(".key").forEach(k => k.classList.remove("highlight"));
