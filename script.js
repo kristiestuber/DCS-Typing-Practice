@@ -28,14 +28,16 @@ const spokenChars = {
 };
 
 const colorMap = {
-  lightblue: ["1", "q", "a", "z", "control", "0", "-", "=", "[", "]"],
-  yellow: ["x", "."],
+  lightblue: [
+    "`", "1", "tab", "q", "caps lock", "a", "shift", "z", "control", "option",
+    "0", "-", "=", "p", "[", "]", "\\", ";", "'", "return", "/", "option"
+  ],
+  yellow: ["2", "w", "s", "x", "command", "9", "o", "l", ".", "command"],
   pink: ["3", "e", "d", "c", "8", "i", "k", ","],
   orange: ["4", "5", "r", "t", "f", "g", "v", "b"],
   green: ["6", "7", "y", "u", "h", "j", "n", "m"],
   gray: [" "]
 };
-
 
 function getKeyColor(key) {
   key = key.toLowerCase();
