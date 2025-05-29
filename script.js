@@ -29,8 +29,8 @@ const spokenChars = {
 
 const colorMap = {
   lightblue: [
-    "1", "q", "a", "z", "x", "0", "-", "=", "[", "]",
-    "`", "tab", "caps lock", "shift", "control", "option", "p", ";", "/", "delete", "\\", "return", "'", "shift", "option"
+    "`", "tab", "caps lock", "shift", "control", "option",
+    "p", ";", "/", "delete", "\\", "return", "'", "shift", "option"
   ],
   yellow: [
     "2", "w", "s", "x", "command", "9", "o", "l", ".", "command"
@@ -81,7 +81,7 @@ function createKeyboard() {
         ? `char${key.charCodeAt(0)}`
         : key.toLowerCase();
 
-      keyDiv.className = `key ${getKeyColor(key)}`;
+keyDiv.className = `key ${getKeyColor(key)}`;
       keyDiv.id = `key-${safeKey}`;
       if (key === " ") keyDiv.classList.add("spacebar");
       rowDiv.appendChild(keyDiv);
