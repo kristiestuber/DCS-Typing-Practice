@@ -163,3 +163,9 @@ function initApp() {
   document.getElementById("app").style.display = "block";
   createKeyboard();
 }
+function initApp() {
+  document.getElementById("start-button").style.display = "none";
+  document.getElementById("app").style.display = "block";
+  document.getElementById("intro-text").style.display = "none";
+  createKeyboard();
+}
