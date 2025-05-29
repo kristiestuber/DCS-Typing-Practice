@@ -16,15 +16,15 @@ const errorSound = document.getElementById("error-sound");
 const shiftedChars = {
   "!": "1", "@": "2", "#": "3", "$": "4", "%": "5", "^": "6", "&": "7",
   "*": "8", "(": "9", ")": "0", "_": "-", "+": "=", ":": ";", "\"": "'",
-  "<": ",", ">": ".", "?": "/"
+  "<": ",", ">": ".", "?": "/", "|": "\\"
 };
 
 const spokenChars = {
   "!": "exclamation mark", "?": "question mark", ".": "period", ",": "comma",
-  ":": "colon", ";": "semicolon", """: "quotation mark", "'": "apostrophe",
+  ":": "colon", ";": "semicolon", "\"": "quotation mark", "'": "apostrophe",
   "-": "dash", "_": "underscore", "(": "left parenthesis", ")": "right parenthesis",
   "&": "ampersand", "#": "hashtag", "*": "asterisk", "+": "plus", "=": "equals",
-  "/": "slash", "\": "backslash"
+  "/": "slash", "\\": "backslash"
 };
 
 const colorMap = {
@@ -58,7 +58,7 @@ function createKeyboard() {
   const lowercase = document.getElementById("case-toggle").checked;
   const layout = [
     ["`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "delete"],
-    ["tab", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", "\"],
+    ["tab", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", "\\"],
     ["caps lock", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'", "return"],
     ["shift", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", "shift"],
     ["ctrl", "option", "command", " ", "command", "option"]
@@ -71,15 +71,13 @@ function createKeyboard() {
       const keyDiv = document.createElement("div");
       const displayKey = key === " " ? "Space" : (lowercase ? key : key.toUpperCase());
       keyDiv.textContent = displayKey;
-      if (key !== "") {
-        keyDiv.className = `key ${getKeyColor(key)}`;
-      let idKey = key === " " ? "space" : key.toLowerCase().replace(/[^a-z0-9]/g, code => {
-  return `char${code.charCodeAt(0)}`;
-});
-keyDiv.id = `key-${idKey}`;
-      } else {
-        keyDiv.className = "key";
-      }
+
+      const safeKey = key === " " ? "space" : key.length === 1 && /[^a-z0-9]/i.test(key)
+        ? `char${key.charCodeAt(0)}`
+        : key.toLowerCase();
+
+      keyDiv.className = `key ${getKeyColor(key)}`;
+      keyDiv.id = `key-${safeKey}`;
       if (key === " ") keyDiv.classList.add("spacebar");
       rowDiv.appendChild(keyDiv);
     });
@@ -100,15 +98,16 @@ function highlightKey(char) {
     shiftNeeded = true;
   }
 
-  let keyId = baseKey === " " ? "space" : baseKey.toLowerCase().replace(/[^a-z0-9]/g, c => `char${c.charCodeAt(0)}`);
-  const key = document.getElementById(`key-${keyId}`);
+  const safeKey = baseKey === " " ? "space" : /[^a-z0-9]/i.test(baseKey)
+    ? `char${baseKey.charCodeAt(0)}`
+    : baseKey.toLowerCase();
+
+  const key = document.getElementById(`key-${safeKey}`);
   if (key) key.classList.add("highlight");
   if (shiftNeeded) {
     const shiftKey = document.getElementById("key-shift");
     if (shiftKey) shiftKey.classList.add("highlight");
   }
-}
-
 }
 
 function startTyping() {
@@ -164,7 +163,7 @@ document.addEventListener("keydown", e => {
     try { errorSound.play(); } catch {}
   }
 });
-}
+
 function initApp() {
   document.getElementById("start-button").style.display = "none";
   document.getElementById("app").style.display = "block";
