@@ -187,6 +187,7 @@ document.addEventListener("keydown", e => {
 });
 
 // Called by the Start button in index.html
+
 function initApp() {
   const startBtn  = document.getElementById("start-button");
   const introText = document.getElementById("intro-text");
@@ -195,4 +196,7 @@ function initApp() {
   if (introText) introText.style.display = "none";
   if (app)       app.style.display       = "block";
   createKeyboard();
+  <audio id="applause-sound" preload="auto">
+  <source src="applause.mp3" type="audio/mpeg">
+</audio>
 }
