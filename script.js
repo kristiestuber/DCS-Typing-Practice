@@ -30,14 +30,14 @@ const spokenChars = {
   "/": "slash", "\\": "backslash", " ": "space"
 };
 
-// We color keys by their final DOM id (key-<id>) to avoid label/ID mismatches.
+// Color by DOM id to avoid label/ID mismatches.
 function getKeyColor(keyId) {
   keyId = keyId.toLowerCase();
   const colorKeyIds = {
     lightblue: [
       "key-`", "key-1", "key-tab", "key-q", "key-caps lock", "key-a", "key-shift", "key-z",
       "key-control", "key-option", "key-0", "key--", "key-=", "key-p", "key-[", "key-]",
-      "key-\\", "key-;", "key-'", "key-return", "key-/", "key-option" // option twice is fine
+      "key-\\", "key-;", "key-'", "key-return", "key-/", "key-option"
     ],
     yellow: [
       "key-2", "key-w", "key-s", "key-x", "key-command", "key-9", "key-o", "key-l", "key-."
@@ -53,13 +53,11 @@ function getKeyColor(keyId) {
   return "";
 }
 
-// Build a safe key id used in the DOM. Keep words as-is (lowercase), single punctuation as itself.
+// Build a safe key id used in the DOM.
 function toKeyId(label) {
   if (label === " ") return "key-space";
-  // keep multi-word labels exactly, lowercase (e.g., "caps lock")
   if (/[a-z]/i.test(label) && label.length > 1) return `key-${label.toLowerCase()}`;
-  // single character key: letters/numbers/punct
-  return `key-${label}`;
+  return `key-${label}`; // single char
 }
 
 function speak(char) {
@@ -187,7 +185,6 @@ document.addEventListener("keydown", e => {
 });
 
 // Called by the Start button in index.html
-
 function initApp() {
   const startBtn  = document.getElementById("start-button");
   const introText = document.getElementById("intro-text");
@@ -196,7 +193,4 @@ function initApp() {
   if (introText) introText.style.display = "none";
   if (app)       app.style.display       = "block";
   createKeyboard();
-  <audio id="applause-sound" preload="auto">
-  <source src="applause.mp3" type="audio/mpeg">
-</audio>
 }
