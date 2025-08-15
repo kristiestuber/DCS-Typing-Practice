@@ -15,6 +15,8 @@ const audioToggle = document.getElementById("audio-toggle");
 const applause    = document.getElementById("applause-sound");
 const errorSound  = document.getElementById("error-sound");
 
+console.log("script.js loaded"); // sanity check
+
 // --- Maps ---
 const shiftedChars = {
   "!": "1", "@": "2", "#": "3", "$": "4", "%": "5", "^": "6", "&": "7",
@@ -194,3 +196,6 @@ function initApp() {
   if (app)       app.style.display       = "block";
   createKeyboard();
 }
+
+// Ensure inline onclick can find it
+window.initApp = initApp;
