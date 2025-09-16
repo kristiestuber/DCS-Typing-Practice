@@ -1,3 +1,46 @@
+// --- Robust Speech Synthesis helpers ---
+let TTS_READY = false;
+
+function voicesReady() {
+  return new Promise((resolve) => {
+    const ok = () => speechSynthesis.getVoices && speechSynthesis.getVoices().length > 0;
+    if (ok()) return resolve();
+    const onVC = () => { if (ok()) { speechSynthesis.removeEventListener('voiceschanged', onVC); resolve(); } };
+    speechSynthesis.addEventListener('voiceschanged', onVC);
+    setTimeout(resolve, 1200); // fallback for Safari if event never fires
+  });
+}
+
+async function initTTS() {
+  if (TTS_READY) return;
+  await voicesReady();
+  try { speechSynthesis.cancel(); speechSynthesis.resume(); } catch {}
+  // Warm-up so first real utterance isn't dropped
+  const u = new SpeechSynthesisUtterance('_');
+  u.volume = 0; u.lang = 'en-US';
+  await new Promise(res => { u.onend = u.onerror = res; speechSynthesis.speak(u); });
+  TTS_READY = true;
+}
+
+async function speak(text, { rate = 1, pitch = 1, volume = 1, lang = 'en-US' } = {}) {
+  if (!TTS_READY) await initTTS();
+  try { speechSynthesis.resume(); } catch {}
+  return new Promise((res) => {
+    const u = new SpeechSynthesisUtterance(text);
+    u.rate = rate; u.pitch = pitch; u.volume = volume; u.lang = lang;
+    const voices = speechSynthesis.getVoices();
+    const v = voices.find(v => /en[-_]?US/i.test(v.lang)) || voices[0];
+    if (v) u.voice = v;
+    u.onend = u.onerror = res;
+    speechSynthesis.speak(u);
+  });
+}
+
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') {
+    try { speechSynthesis.resume(); } catch {}
+  }
+});
 // --- State ---
 let targetText = "";
 let currentIndex = 0;
